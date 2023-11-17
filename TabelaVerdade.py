@@ -24,7 +24,8 @@ while True:
         'and': formula.count('and'),
         'or': formula.count('or'),
         'not': formula.count('not') + formula.count('~()') + formula.count('~'),
-        'implic': formula.count('=>')
+        'implic': formula.count('=>'),
+        'nand'  : formula.count('nand')
     }
 
     #Faz as contagens das operações e a quantidade de vezes
@@ -46,7 +47,7 @@ while True:
     #Verifica se as letras não estão dentro dos parenteses
     letraForaParentese = []
     for letra in letrasValidas:
-        if (letra not in '()') and (letra not in '~()') and (letra not in 'not()'):
+        if letra in '()' or letra in '~()' or letra in 'not()':
             letraForaParentese.append(letra)
 
     variaveis = sorted(set(letraForaParentese))
