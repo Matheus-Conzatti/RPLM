@@ -4,52 +4,63 @@ import ttg
 alfabeto = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 while True:
-    # Lista que armazena as variáveis
+    # Lista vazia para fazer o armazenamento das letras da fórmula
     variaveisLista = []
 
     # O usuário entra com a fórmula
     formula = input('Digite a fórmula em minúscula:')
     if not formula.islower():
         print('ERRO: A fórmula digitada não pode estar em maiúscula!')
-        continue
+        break
 
-    # Adiciona apenas as letras da fórmula à lista de variáveis
+    #Adiciona apenas as letras da fórmula à lista de variáveis
     for char in formula:
-        if char.isalpha() and char in alfabeto:
+        if char.isalpha():
             variaveisLista.append(char)
 
-    # Faz a contagem das operações que estão na fórmula
+
+    #Faz a contagem das operações que está na fórmula
     operacoes = {
         'and': formula.count('and'),
         'or': formula.count('or'),
         'not': formula.count('not') + formula.count('~()') + formula.count('~'),
-        'implic': formula.count('=>'),
-        'nand': formula.count('nand')
+        'implic': formula.count('=>')
     }
 
-    # Deixa em ordem alfabética
-    variaveisLista = sorted(set(variaveisLista))
-
-    # Imprime as letras digitadas
-    print('Variáveis:', variaveisLista)
-
-    # Faz as contagens das operações e a quantidade de vezes
+    #Faz as contagens das operações e a quantidade de vezes
     print('Operações na fórmula:')
-    for operacao, quantidade in operacoes.items():
-        if operacao == 'nand':
-            print(f"{operacao}: {quantidade} vezes.")
-        else:
-            print(f"{operacao}: {quantidade} vezes.")
+    for operacoes, quantidade in operacoes.items():
+        print(f"{operacoes}: {quantidade} vezes.")
 
-    # Cria a tabela verdade
-    tabelaVerdade = ttg.Truths(variaveisLista, [formula])
+    #Armazena na lista vazia para armazenar as letras digitadas
+    letrasDigitadas = []
 
-    # Imprime a tabela verdade
-    print("\nTabela Verdade")
+    #Adiciona apenas as letras da fórmula à lista de letra
+    for char in formula:
+        if char.isalpha():
+            letrasDigitadas.append(char)
+
+    #Verifica se as letras que forma digitadas estão no alfabeto
+    letrasValidas = [letra for letra in letrasDigitadas if letra in alfabeto]
+
+    #Verifica se as letras não estão dentro dos parenteses
+    letraForaParentese = []
+    for letra in letrasValidas:
+        if (letra not in '()') and (letra not in '~()') and (letra not in 'not()'):
+            letraForaParentese.append(letra)
+
+    variaveis = sorted(set(letraForaParentese))
+
+    #Imprime as letras digitadas
+    print('Variaveis:', variaveis)
+
+    tabelaVerdade = ttg.Truths(variaveis, [formula])
+
+    #Imprime a tabela verdade
+    print("Tabela Verdade")
     print(tabelaVerdade)
 
-    # Pergunta ao usuário se ele deseja sair do programa
+    #Pergunta ao usuário se ele deseja sair do programa
     continuar = input('Digite S/N para continuar:')
     if continuar.upper() != 'S':
-        print('Finalizando o processo...')
         break
